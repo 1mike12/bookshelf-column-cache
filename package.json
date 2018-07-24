@@ -1,0 +1,34 @@
+{
+  "name": "bookshelf-column-cache",
+  "version": "1.0.2",
+  "description": "helper plugin to be able to get column info for tables",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1mike12/bookshelf-column-cache"
+  },
+  "keywords": [
+    "bookshelf",
+    "orm",
+    "strip-save"
+  ],
+  "author": {
+    "name": "Mike Qin"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/1mike12/bookshelf-column-cache/issues"
+  },
+  "scripts": {},
+  "homepage": "https://github.com/1mike12/bookshelf-column-cache",
+  "dependencies": {
+    "bookshelf": "^0.13.3",
+    "knex": "^0.15.2"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0",
+    "sqlite3": "^4.0.2"
+  },
+  "readmeFilename": "README.md"
+}
