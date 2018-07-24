@@ -6,12 +6,18 @@ It does this by checking the database for all the valid column names for a given
 
 ## Installation
 ```
-    npm install bookshelf-column-cache
+npm install bookshelf-column-cache
 ```
 Then in your bookshelf configuration:
 ```
-    var bookshelf = require('bookshelf')(knex);
-    bookshelf.plugin(require('bookshelf-column-cache');
+var bookshelf = require('bookshelf')(knex);
+bookshelf.plugin(require('bookshelf-column-cache');
 
-    bookshelf.plugin(require('some-other-plugin-that-uses-column-cache'))
+bookshelf.plugin(require('some-other-plugin-that-uses-column-cache'))
+```
+
+To Use
+```
+let columnSet = await bookshelf.ColumnCache.getColumnsForTable("users");
+//columnsSet will be a Set of the column names
 ```
