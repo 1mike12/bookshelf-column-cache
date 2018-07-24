@@ -1,6 +1,6 @@
 {
   "name": "bookshelf-column-cache",
-  "version": "1.0.2",
+  "version": "1.0.0",
   "description": "helper plugin to be able to get column info for tables",
   "main": "index.js",
   "repository": {
