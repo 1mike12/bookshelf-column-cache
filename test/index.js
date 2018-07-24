@@ -1,4 +1,4 @@
-const db = require("../database");
+const db = require("../test_helpers/database");
 
 before(async () =>{
     await db.latestMigrations();

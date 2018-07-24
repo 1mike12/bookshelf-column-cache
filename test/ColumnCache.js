@@ -1,4 +1,4 @@
-const db = require("../database");
+const db = require("../test_helpers/database");
 const ColumnCache = require("../ColumnCache");
 
 before(async () =>{
