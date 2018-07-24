@@ -1,18 +1,18 @@
-const db = require("./database");
+const db = require("../database");
 const ColumnCache = require("../ColumnCache");
 
 before(async () =>{
     await db.latestMigrations();
 });
 
-describe("column cache", function(){
+describe("ColumnCache", function(){
 
 
-    it("should strip away model's attributes not on the database", async () =>{
+    it("should get columns", async () =>{
         let cc = new ColumnCache(db.bookshelf);
         let columns = await cc.getColumnsForTable("users");
         expect(Array.from(columns).length).equal(2)
-    })
+    });
 
     it ("should not query the database multiple times", async ()=> {
         let cc = new ColumnCache(db.bookshelf);
@@ -23,6 +23,5 @@ describe("column cache", function(){
         }
         await Promise.all(promises);
         //examine queries in log to make sure there's not 25 info queries.
-    })
-
+    });
 });

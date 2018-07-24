@@ -1,4 +1,4 @@
-const TABLE_NAME = require("../test/User").TABLE_NAME;
+const TABLE_NAME = "users";
 
 module.exports = {
     up: (knex, Promise) =>{
