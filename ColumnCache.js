@@ -2,7 +2,7 @@ class ColumnCache {
 
     constructor(Bookshelf){
         this.bookshelf = Bookshelf;
-        this.tablesQueried = new Set();
+        this.tableQueryInProgress = new Set();
         this.tableName_Resolvables = new Map();
         this.tableName_Set = new Map();
     }
@@ -20,8 +20,8 @@ class ColumnCache {
         }
 
         const knex = this.bookshelf.knex;
-        if (!this.tablesQueried.has(tableName)){
-            this.tablesQueried.add(tableName);
+        if (!this.tableQueryInProgress.has(tableName)){
+            this.tableQueryInProgress.add(tableName);
             this.tableName_Resolvables.set(tableName, []);
 
             let columnsObject = await knex(tableName).columnInfo();
@@ -42,7 +42,7 @@ class ColumnCache {
                 this.tableName_Resolvables.delete(tableName);
             }
             //clean up
-            this.tablesQueried.delete(tableName);
+            this.tableQueryInProgress.delete(tableName);
             return columnsSet;
         }
         //second to nth time getting table names. queue up promises to resolve for future
