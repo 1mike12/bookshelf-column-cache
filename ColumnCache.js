@@ -1,10 +1,9 @@
 class ColumnCache {
 
-    constructor(Bookshelf){
+    constructor(Bookshelf) {
         this.bookshelf = Bookshelf;
-        this.tableQueryInProgress = new Set();
-        this.tableName_Resolvables = new Map();
-        this.tableName_Set = new Map();
+        this.tableName_Set = {};
+        this.tableName_Promise = {};
     }
 
     /**
@@ -12,46 +11,29 @@ class ColumnCache {
      * @param tableName
      * @return {Promise<Set>} set of column strings
      */
-    async getColumnsForTable(tableName){
+    async getColumnsForTable(tableName) {
+        //1st try to get the cached data
+        let set = this.tableName_Set[tableName];
+        if (set) return set;
 
-        //already cached
-        if (this.tableName_Set.get(tableName)){
-            return this.tableName_Set.get(tableName);
-        }
+        //2 try to return ongoing promise
+        let promise = this.tableName_Promise[tableName];
+        if (this.tableName_Promise[tableName]) return promise;
 
+        //3 query the database for column info and return the promise
         const knex = this.bookshelf.knex;
-        if (!this.tableQueryInProgress.has(tableName)){
-            this.tableQueryInProgress.add(tableName);
-            this.tableName_Resolvables.set(tableName, []);
-
-            let columnsObject = await knex(tableName).columnInfo();
-
-            let columnsSet = new Set();
-            for (let key in columnsObject) {
-                if (columnsObject.hasOwnProperty(key)) columnsSet.add(key)
-            }
-            this.tableName_Set.set(tableName, columnsSet);
-
-            //resolve all waiting
-            let resolvables = this.tableName_Resolvables.get(tableName);
-            if (resolvables && resolvables.length > 0){
-                for (let i = 0; i < resolvables.length; i++) {
-                    let resolve = resolvables[i];
-                    resolve(columnsSet);
+        promise = knex(tableName).columnInfo()
+            .then(columnsObject => {
+                let columnsSet = new Set();
+                for (let key in columnsObject) {
+                    if (columnsObject.hasOwnProperty(key)) columnsSet.add(key)
                 }
-                this.tableName_Resolvables.delete(tableName);
-            }
-            //clean up
-            this.tableQueryInProgress.delete(tableName);
-            return columnsSet;
-        }
-        //second to nth time getting table names. queue up promises to resolve for future
-        else if (!this.tableName_Set.get(tableName)){
-            const promise = new Promise((resolve, rej) =>{
-                this.tableName_Resolvables.get(tableName).push(resolve)
+                this.tableName_Set[tableName] = columnsSet;
+                return columnsSet;
             });
-            return promise;
-        }
+
+        this.tableName_Promise[tableName] = promise;
+        return promise;
     }
 }
 

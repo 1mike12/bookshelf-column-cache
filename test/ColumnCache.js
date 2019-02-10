@@ -5,6 +5,10 @@ before(async () =>{
     await db.latestMigrations();
 });
 
+after(()=> {
+    process.exit(0)
+});
+
 describe("ColumnCache", function(){
 
 
