@@ -19,5 +19,5 @@ bookshelf.plugin(require('some-other-plugin-that-uses-column-cache'))
 To Use
 ```
 let columnSet = await bookshelf.ColumnCache.getColumnsForTable("users");
-//columnsSet will be a Set of the column names
+//columnsSet will be a Set of the column names on the users table
 ```
